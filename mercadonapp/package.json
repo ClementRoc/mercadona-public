@@ -9,14 +9,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "^5.2.3"
+    "bootstrap": "^5.2.3",
+    "sass": "^1.61.0"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
+    "gulp-plumber": "^1.2.1",
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^5.1.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-util": "^3.0.8",
     "gulp-webp": "^4.0.1"
   }
 }
