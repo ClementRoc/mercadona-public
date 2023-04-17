@@ -12,9 +12,9 @@ var gulp = require('gulp'),
     webp = require('gulp-webp');
 
 var paths = {
-    src: './static/',
-    dest: './public/',
-    imgDest: './public/img/',
+    src: './assets/',
+    dest: './static/',
+    imgDest: './static/img/',
     npm: 'node_modules/'
 };
 
@@ -58,12 +58,26 @@ gulp.task('css', function () {
         .pipe(gulp.dest(paths.dest + 'css'));
 });
 
+gulp.task('css-fonts', function () {
+    return gulp.src(paths.src + 'scss/fonts.scss')
+        .pipe(plumber({ errorHandler: errorHandler }))
+        .pipe(autoprefixer({ browsers: ['last 2 versions'] }))
+        .pipe(minifyIfNeeded(true))
+        .pipe(concat('fonts.css'))
+        .pipe(gulp.dest(paths.dest + 'css'));
+});
+
 gulp.task('webp', function() {
     return gulp.src([paths.src + 'img/**/*.{jpg,jpeg,png}'])
         .pipe(rename({
             extname: '.webp',
         }))
         .pipe(webp({ quality: 80 }))
+        .pipe(gulp.dest(paths.imgDest));
+});
+
+gulp.task('image', function() {
+    return gulp.src([paths.src + 'img/**/*.{jpg,jpeg,png}'])
         .pipe(gulp.dest(paths.imgDest));
 });
 
@@ -78,6 +92,6 @@ process.on('SIGINT', function() {
     process.exit();
 });
 
-exports.default = gulp.series(['css', 'js', 'webp', 'fonts'])
+exports.default = gulp.series(['css', 'js', 'image', 'webp', 'fonts', 'css-fonts'])
 
 

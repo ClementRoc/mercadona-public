@@ -1,5 +1,5 @@
 requirements.txt
 config.py
 .idea
-mercadonapp/static
+mercadonapp/assets
 mercadonapp/node_modules
