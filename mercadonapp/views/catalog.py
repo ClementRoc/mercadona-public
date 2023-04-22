@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from mercadonapp.database import get_articles_data
 
 mod = Blueprint('catalog', __name__)
 
@@ -7,5 +8,6 @@ mod = Blueprint('catalog', __name__)
 def catalog():
     return render_template(
         'catalog.html',
-        title='Catalogue'
+        title='Catalogue',
+        articles=get_articles_data()
     )

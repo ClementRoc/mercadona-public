@@ -5,6 +5,7 @@
 {% block body %}
     {% include 'include/header.html' %}
     <div class="filter">
+    {{ articles }}
         <div class="filter-breadcrumb lazyslow-left">
             <nav aria-label="Breadcrumb" class="breadcrumb">
                 <ul>
@@ -17,24 +18,32 @@
             </nav>
         </div>
         <div class="filter-options">
-            <label class="checkbox lazyslow-left">
-                <button class="checkbox-promotion">
-                    <p>Promos</p>
-                    <input type="checkbox">
-                </button>
-                <button class="checkbox-cold">
-                    <p>Frais</p>
-                    <input type="checkbox">
-                </button>
-                <button class="checkbox-frozen">
-                    <p>Surgelé</p>
-                    <input type="checkbox">
-                </button>
-                <button class="checkbox-bio">
-                    <p>Bio</p>
-                    <input type="checkbox">
-                </button>
-            </label>
+            <div class="checkbox lazyslow-left">
+                <label>
+                    <a class="checkbox-promotion">
+                        <p>Promos</p>
+                        <input type="checkbox">
+                    </a>
+                </label>
+                <label>
+                    <a class="checkbox-cold">
+                        <p>Frais</p>
+                        <input type="checkbox">
+                    </a>
+                </label>
+                <label>
+                    <a class="checkbox-frozen">
+                        <p>Surgelé</p>
+                        <input type="checkbox">
+                    </a>
+                </label>
+                <label>
+                    <a class="checkbox-bio">
+                        <p>Bio</p>
+                        <input type="checkbox">
+                    </a>
+                </label>
+            </div>
             <label class="sort lazyslow-right">
                 <select class="sort-selection">
                     <option value="">Tri par défaut</option>
