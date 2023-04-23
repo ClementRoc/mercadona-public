@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     gutil = require('gulp-util'),
     cleanCSS = require('gulp-clean-css'),
+    addSrc = require('gulp-add-src'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
     autoprefixer = require('gulp-autoprefixer'),
@@ -39,6 +40,9 @@ gulp.task('js', function () {
     return gulp.src(paths.src + 'js/**/*.*')
         .pipe(plumber({ errorHandler: errorHandler }))
         .pipe(uglifyIfNeeded())
+        .pipe(addSrc.prepend([
+            paths.npm + 'jquery/dist/jquery.min.js'
+        ]))
         .pipe(concat('app.js'))
         .pipe(gulp.dest(paths.dest + 'js'));
 });

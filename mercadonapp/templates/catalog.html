@@ -5,7 +5,6 @@
 {% block body %}
     {% include 'include/header.html' %}
     <div class="filter">
-    {{ articles }}
         <div class="filter-breadcrumb lazyslow-left">
             <nav aria-label="Breadcrumb" class="breadcrumb">
                 <ul>
@@ -19,28 +18,28 @@
         </div>
         <div class="filter-options">
             <div class="checkbox lazyslow-left">
-                <label>
+                <label class="checkbox-filter" for="promotion">
                     <a class="checkbox-promotion">
                         <p>Promos</p>
-                        <input type="checkbox">
+                        <input type="checkbox" id="promotion" value="promotion">
                     </a>
                 </label>
-                <label>
+                <label class="checkbox-filter" for="cold">
                     <a class="checkbox-cold">
                         <p>Frais</p>
-                        <input type="checkbox">
+                        <input type="checkbox" id="cold" value="cold">
                     </a>
                 </label>
-                <label>
+                <label class="checkbox-filter" for="frozen">
                     <a class="checkbox-frozen">
                         <p>Surgelé</p>
-                        <input type="checkbox">
+                        <input type="checkbox" id="frozen" value="frozen">
                     </a>
                 </label>
-                <label>
+                <label class="checkbox-filter" for="bio">
                     <a class="checkbox-bio">
                         <p>Bio</p>
-                        <input type="checkbox">
+                        <input type="checkbox" id="bio" value="bio">
                     </a>
                 </label>
             </div>
@@ -54,92 +53,45 @@
         </div>
     </div>
     <div class="catalog lazyslow-down">
-        <div class="article">
-            <img class="article-img" src="{{ url_for('static', filename='img/pages/catalog/articles/gnocchis.png') }}" alt="">
-            <div class="article-badges">
-
-            </div>
-            <div class="article-title">
-                <h3>LUSTUCRU</h3>
-                <p class="K2D-paragraph">Gnocchi à poêler</p>
-            </div>
-            <div class="article-description">
-                <p>Le gnocchi est une famille de pâtes préparées soit avec un mélange de farine de blé dur ou de blé tendre et de pomme de terre</p>
-            </div>
-            <div class="article-footer">
-                <div class="tags">
-                    <button>1 sachet</button>
-                    <button>200g</button>
+        {% for article in articles %}
+            <div class="article">
+                {% if article.promotion_start is defined %}
+                    <span class="article-promotion K2D-paragraph">{{ article.promotion_start }} - {{ article.promotion_end }}</span>
+                {% endif %}
+                <img class="article-img" src="{{ article.image }}" alt="">
+                <div class="article-badges">
+                    {% if article.filters is defined %}
+                        {% for filter in article.filters %}
+                            <span class="badge-{{ filter.class }} K2D-paragraph" data-category="{{ filter.class }}">{{ filter.name }}</span>
+                        {% endfor %}
+                    {% endif %}
                 </div>
-                <div class="price">
-                    <h2>4,59€</h2>
+                <div class="article-title">
+                    <h3>{{ article.brand }}</h3>
+                    <p class="K2D-paragraph">{{ article.product }}</p>
                 </div>
-            </div>
-        </div>
-        <div class="article">
-            <img class="article-img" src="{{ url_for('static', filename='img/pages/catalog/articles/gnocchis.png') }}" alt="">
-            <div class="article-badges">
-
-            </div>
-            <div class="article-title">
-                <h3>LUSTUCRU</h3>
-                <p class="K2D-paragraph">Gnocchi à poêler</p>
-            </div>
-            <div class="article-description">
-                <p>Le gnocchi est une famille de pâtes préparées soit avec un mélange de farine de blé dur ou de blé tendre et de pomme de terre</p>
-            </div>
-            <div class="article-footer">
-                <div class="tags">
+                <div class="article-description">
+                    <p>{{ article.description }}</p>
                 </div>
-                <div class="price">
-                    <h2>4,59€</h2>
+                <div class="article-footer">
+                    <div class="tags">
+                        {% if article.tags is defined %}
+                            {% for tag in articles.tags %}
+                                <button>{{ tag }}</button>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="price">
+                        {% if article.promotion_percentage is defined %}
+                            <h5>{{ article.price }}€</h5>
+                            <h2 class="promoted-price">{{ article.promoted_price }}€</h2>
+                        {% else %}
+                            <h2>{{ article.price }}€</h2>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="article">
-            <img class="article-img" src="{{ url_for('static', filename='img/pages/catalog/articles/gnocchis.png') }}" alt="">
-            <div class="article-badges">
-                <span class="badge-frozen K2D-paragraph">GEL</span>
-                <span class="badge-bio K2D-paragraph">BIO</span>
-            </div>
-            <div class="article-title">
-                <h3>LUSTUCRU</h3>
-                <p class="K2D-paragraph">Gnocchi à poêler</p>
-            </div>
-            <div class="article-description">
-                <p>Le gnocchi est une famille de pâtes préparées soit avec un mélange de farine de blé dur ou de blé tendre et de pomme de terre</p>
-            </div>
-            <div class="article-footer">
-                <div class="tags">
-                </div>
-                <div class="price">
-                    <h2>4,59€</h2>
-                </div>
-            </div>
-        </div>
-        <div class="article">
-            <span class="article-promotion K2D-paragraph">14/04 - 21/04</span>
-            <img class="article-img" src="{{ url_for('static', filename='img/pages/catalog/articles/gnocchis.png') }}" alt="">
-            <div class="article-badges">
-                <span class="badge-promotion K2D-paragraph">-30%</span>
-                <span class="badge-cold K2D-paragraph">FRAIS</span>
-            </div>
-            <div class="article-title">
-                <h3>LUSTUCRU</h3>
-                <p class="K2D-paragraph">Gnocchi à poêler</p>
-            </div>
-            <div class="article-description">
-                <p>Le gnocchi est une famille de pâtes préparées soit avec un mélange de farine de blé dur ou de blé tendre et de pomme de terre</p>
-            </div>
-            <div class="article-footer">
-                <div class="tags">
-                </div>
-                <div class="price">
-                    <h5>4,59€</h5>
-                    <h2 class="promoted-price">3,19€</h2>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
         <div class="pagination">
 
         </div>

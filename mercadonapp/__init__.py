@@ -8,4 +8,3 @@ from mercadonapp.views import catalog
 
 app.register_blueprint(home.mod)
 app.register_blueprint(catalog.mod)
-
