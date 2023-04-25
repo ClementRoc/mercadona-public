@@ -7,56 +7,56 @@ from psycopg2.extensions import register_adapter, AsIs
 import json
 
 
-def adapt_dict(dict_var):
-    return AsIs("'" + json.dumps(dict_var) + "'")
-
-
-register_adapter(dict, adapt_dict)
-
-db = SQLAlchemy(app)
-
-
-def init_db():
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
-        db.session.commit()
+# def adapt_dict(dict_var):
+#     return AsIs("'" + json.dumps(dict_var) + "'")
+#
+#
+# register_adapter(dict, adapt_dict)
+#
+# db = SQLAlchemy(app)
+#
+#
+# def init_db():
+#     with app.app_context():
+#         db.drop_all()
+#         db.create_all()
+#         db.session.commit()
 
 
 client = Client(config.CONTENTFUL_SPACE_ID, config.CONTENTFUL_ACCESS_TOKEN)
 
 
-class Article(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    image = db.Column(db.String, nullable=False)
-    brand = db.Column(db.String(50), nullable=False)
-    product = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.String, nullable=False)
-    filters = db.Column(db.String, nullable=True)
-    tags = db.Column(db.String, nullable=True)
-    categories = db.Column(db.String, nullable=False)
-    subcategories = db.Column(db.String, nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    promotion_percentage = db.Column(db.String, nullable=True)
-    promoted_price = db.Column(db.Float, nullable=True)
-    promotion_start = db.Column(db.String, nullable=True)
-    promotion_end = db.Column(db.String, nullable=True)
-
-    def __init__(self, image, brand, product, description, filters, tags, categories, subcategories, price,
-                 promotion_percentage, promoted_price, promotion_start, promotion_end):
-        self.image = image
-        self.brand = brand
-        self.product = product
-        self.description = description
-        self.filters = filters
-        self.tags = tags
-        self.categories = categories
-        self.subcategories = subcategories
-        self.price = price
-        self.promotion_percentage = promotion_percentage
-        self.promoted_price = promoted_price
-        self.promotion_start = promotion_start
-        self.promotion_end = promotion_end
+# class Article(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     image = db.Column(db.String, nullable=False)
+#     brand = db.Column(db.String(50), nullable=False)
+#     product = db.Column(db.String(200), nullable=False)
+#     description = db.Column(db.String, nullable=False)
+#     filters = db.Column(db.String, nullable=True)
+#     tags = db.Column(db.String, nullable=True)
+#     categories = db.Column(db.String, nullable=False)
+#     subcategories = db.Column(db.String, nullable=False)
+#     price = db.Column(db.Float, nullable=False)
+#     promotion_percentage = db.Column(db.String, nullable=True)
+#     promoted_price = db.Column(db.Float, nullable=True)
+#     promotion_start = db.Column(db.String, nullable=True)
+#     promotion_end = db.Column(db.String, nullable=True)
+#
+#     def __init__(self, image, brand, product, description, filters, tags, categories, subcategories, price,
+#                  promotion_percentage, promoted_price, promotion_start, promotion_end):
+#         self.image = image
+#         self.brand = brand
+#         self.product = product
+#         self.description = description
+#         self.filters = filters
+#         self.tags = tags
+#         self.categories = categories
+#         self.subcategories = subcategories
+#         self.price = price
+#         self.promotion_percentage = promotion_percentage
+#         self.promoted_price = promoted_price
+#         self.promotion_start = promotion_start
+#         self.promotion_end = promotion_end
 
 
 def fetch_articles():
@@ -126,30 +126,30 @@ def fetch_articles():
     return articles_list
 
 
-def get_articles():
-    articles = fetch_articles()
-
-    for article in articles:
-        a = Article(
-            article['image'],
-            article['brand'],
-            article['product'],
-            article['description'],
-            article['filters'],
-            article['tags'],
-            article['categories'],
-            article['subcategories'],
-            article['price'],
-            article['promotion_percentage'],
-            article['promoted_price'],
-            article['promotion_start'],
-            article['promotion_end'],
-        )
-
-        db.session.add(a)
-        db.session.commit()
-
-    return Article.query.all()
+# def get_articles():
+#     articles = fetch_articles()
+#
+#     for article in articles:
+#         a = Article(
+#             article['image'],
+#             article['brand'],
+#             article['product'],
+#             article['description'],
+#             article['filters'],
+#             article['tags'],
+#             article['categories'],
+#             article['subcategories'],
+#             article['price'],
+#             article['promotion_percentage'],
+#             article['promoted_price'],
+#             article['promotion_start'],
+#             article['promotion_end'],
+#         )
+#
+#         db.session.add(a)
+#         db.session.commit()
+#
+#     return Article.query.all()
 
 
 def get_categories():
