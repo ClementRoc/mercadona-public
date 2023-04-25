@@ -4,6 +4,7 @@ var gulp = require('gulp'),
     sass = require('gulp-sass')(require('sass')),
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
+    babel = require('gulp-babel'),
     gutil = require('gulp-util'),
     cleanCSS = require('gulp-clean-css'),
     addSrc = require('gulp-add-src'),
@@ -39,6 +40,7 @@ var errorHandler = function (err) {
 gulp.task('js', function () {
     return gulp.src(paths.src + 'js/**/*.*')
         .pipe(plumber({ errorHandler: errorHandler }))
+        .pipe(babel({ presets: ['es2015'] }))
         .pipe(uglifyIfNeeded())
         .pipe(addSrc.prepend([
             paths.npm + 'jquery/dist/jquery.min.js'

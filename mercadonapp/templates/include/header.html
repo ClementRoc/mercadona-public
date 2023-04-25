@@ -1,7 +1,26 @@
 <nav class="header navbar navbar-expand-lg navbar-light">
     <div class="header-menu">
         <a href="{{ url_for('catalog.catalog') }}">Catalogue</a>
-        <a href="#">Rayons</a>
+        <span class="dropdown-menu--button">Rayons</span>
+    </div>
+    <div class="dropdown-menu hidden">
+        <div class="categories">
+            {% for category in categories %}
+            <div class="category">
+                <a>
+                    <h2>{{ category.name }}</h2>
+                </a>
+                <div class="subcategory">
+                    {% for subcategory in category.subcategories %}
+                        <a>{{ subcategory }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <span class="exit-dropdown">
+            <img class="exit-img" src="{{ url_for('static', filename='img/header/exit.png') }}">
+        </span>
     </div>
     <div class="header-logo">
         <a class="navbar-brand" href="{{ url_for('home.home') }}">
