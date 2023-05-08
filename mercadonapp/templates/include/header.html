@@ -1,22 +1,30 @@
 <nav class="header navbar navbar-expand-lg navbar-light">
+    <button class="header-toggler js-menu-toggler">
+        <div class="header-toggler-inner" id="toggler">
+            <div class="header-toggler-icon header-toggler-icon--top"></div>
+            <div class="header-toggler-icon header-toggler-icon--middle"></div>
+            <div class="header-toggler-icon header-toggler-icon--bottom"></div>
+        </div>
+    </button>
     <div class="header-menu">
         <a href="{{ url_for('catalog.catalog') }}">Catalogue</a>
         <span class="dropdown-menu--button">Rayons</span>
     </div>
     <div class="dropdown-menu hidden">
+        <a class="dropdown-menu--mobile" href="{{ url_for('catalog.catalog') }}">Catalogue</a>
         <div class="categories">
             {% for category in categories %}
-            <div class="category">
-                <a>
-                    <h2>{{ category.name }}</h2>
-                </a>
-                <div class="subcategory">
-                    {% for subcategory in category.subcategories %}
-                        <a>{{ subcategory }}</a>
-                    {% endfor %}
+                <div class="category">
+                    <a>
+                        <h2>{{ category.name }}</h2>
+                    </a>
+                    <div class="subcategory">
+                        {% for subcategory in category.subcategories %}
+                            <a>{{ subcategory }}</a>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
         </div>
         <span class="exit-dropdown">
             <img class="exit-img" src="{{ url_for('static', filename='img/header/exit.png') }}">

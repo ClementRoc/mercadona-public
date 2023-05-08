@@ -5,8 +5,12 @@
 {% block body %}
     <body>
         <div class="home-header">
-            <img class="header-img" src="{{ url_for('static', filename='img/pages/home/header.jpg') }}">
-            <h1 class="header-text">Work in progress</h1>
+            <img class="header-img lazyload" src="{{ url_for('static', filename='img/pages/home/header.jpg') }}">
+            <div class="header-presentation lazyslow-right">
+                <h1 class="presentation-title">Profitez des meilleures promos</h1>
+                <p class="presentation-text">Lorem ipsum</p>
+                <a href="{{ url_for('catalog.catalog') }}" class="presentation-btn">Toutes les promos</a>
+            </div>
         </div>
     </body>
 {% endblock %}

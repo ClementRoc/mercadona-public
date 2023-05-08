@@ -42,8 +42,8 @@
                     </a>
                 </label>
             </div>
-            <label class="sort lazyslow-right">
-                <select class="sort-selection">
+            <label for="sort-selection" class="sort lazyslow-right">
+                <select id="sort-selection" class="sort-selection">
                     <option value="default">Tri par défaut</option>
                     <option value="ascending-price">Prix croissant</option>
                     <option value="descending-price">Prix décroissant</option>
@@ -53,7 +53,7 @@
     </div>
     <div class="catalog lazyslow-down">
         {% for article in articles %}
-            <div class="article" data-category="{% for filter in article.filters %}{{ filter.class }} {% endfor %}">
+            <div id="article" class="article" data-category="{% for filter in article.filters %}{{ filter.class }} {% endfor %}">
                 {% if article.promotion_start is not none %}
                     <span class="article-promotion K2D-paragraph">{{ article.promotion_start }} - {{ article.promotion_end }}</span>
                 {% endif %}
@@ -83,9 +83,9 @@
                     <div class="price">
                         {% if article.promotion_percentage is not none %}
                             <h5>{{ article.price }}€</h5>
-                            <h2 class="promoted-price">{{ article.promoted_price }}€</h2>
+                            <h2 id="price" class="promoted-price">{{ article.promoted_price }}€</h2>
                         {% else %}
-                            <h2>{{ article.price }}€</h2>
+                            <h2 id="price">{{ article.price }}€</h2>
                         {% endif %}
                     </div>
                 </div>

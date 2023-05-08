@@ -4,6 +4,7 @@
 'use strict';
 
 var $dropdownButton = $('.dropdown-menu--button');
+var $toggleMenuMobile = $('.js-menu-toggler');
 var $dropdownMenu = $('.dropdown-menu');
 var $exitDropdown = $('.exit-dropdown');
 var $pages = $('.page');
@@ -19,11 +20,27 @@ $exitDropdown.on('click', function () {
     $dropdownMenu.removeClass('lazyload');
     $pages.css('filter', 'unset');
 });
+
+$toggleMenuMobile.on('click', function () {
+    var togglerInner = $('#toggler');
+
+    if ($dropdownMenu.hasClass('hidden')) {
+        togglerInner.removeClass('header-toggler-inner--close');
+        togglerInner.addClass('header-toggler-inner--open');
+        $dropdownMenu.removeClass('hidden');
+        $dropdownMenu.addClass('lazyload');
+    } else {
+        togglerInner.removeClass('header-toggler-inner--open');
+        togglerInner.addClass('header-toggler-inner--close');
+        $dropdownMenu.addClass('hidden');
+        $dropdownMenu.removeClass('lazyload');
+    }
+});
 'use strict';
 
 var $filterCheckboxes = $('input[type="checkbox"]');
-var filterFunc = function filterFunc() {
 
+$filterCheckboxes.on('change', function () {
   var selectedFilters = {};
 
   $filterCheckboxes.filter(':checked').each(function () {
@@ -49,6 +66,6 @@ var filterFunc = function filterFunc() {
     });
   });
   $('.article').hide().filter($filteredResults).show();
-};
+});
 
-$filterCheckboxes.on('change', filterFunc);
+var $filterPrices = $('#sort-selection');
