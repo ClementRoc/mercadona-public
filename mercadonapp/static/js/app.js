@@ -3,42 +3,19 @@
 
 'use strict';
 
-var $dropdownButton = $('.dropdown-menu--button');
-var $toggleMenuMobile = $('.js-menu-toggler');
-var $dropdownMenu = $('.dropdown-menu');
-var $exitDropdown = $('.exit-dropdown');
-var $pages = $('.page');
-
-$dropdownButton.on('click', function () {
-    $dropdownMenu.removeClass('hidden');
-    $dropdownMenu.addClass('lazyload');
-    $pages.css('filter', 'blur(0.5rem)');
-});
-
-$exitDropdown.on('click', function () {
-    $dropdownMenu.addClass('hidden');
-    $dropdownMenu.removeClass('lazyload');
-    $pages.css('filter', 'unset');
-});
-
-$toggleMenuMobile.on('click', function () {
-    var togglerInner = $('#toggler');
-
-    if ($dropdownMenu.hasClass('hidden')) {
-        togglerInner.removeClass('header-toggler-inner--close');
-        togglerInner.addClass('header-toggler-inner--open');
-        $dropdownMenu.removeClass('hidden');
-        $dropdownMenu.addClass('lazyload');
-    } else {
-        togglerInner.removeClass('header-toggler-inner--open');
-        togglerInner.addClass('header-toggler-inner--close');
-        $dropdownMenu.addClass('hidden');
-        $dropdownMenu.removeClass('lazyload');
-    }
-});
-'use strict';
-
 var $filterCheckboxes = $('input[type="checkbox"]');
+var $articles = $('.article');
+var $articlesList = [];
+
+function Article(name, price, categories) {
+  this.name = name;
+  this.price = price;
+  this.categories = categories;
+}
+
+for (var i = 0; i < $articles.length; i++) {
+  $articlesList.push(new Article($articles[i].getAttribute('id'), $articles[i].getAttribute('data-price'), $articles[i].getAttribute('data-category')));
+}
 
 $filterCheckboxes.on('change', function () {
   var selectedFilters = {};
@@ -68,4 +45,80 @@ $filterCheckboxes.on('change', function () {
   $('.article').hide().filter($filteredResults).show();
 });
 
-var $filterPrices = $('#sort-selection');
+$('.categories a').on('click', function () {
+  var $select = $('.breadcrumb-display');
+  $(this).each(function (n, li) {
+    $select.prepend($(li).children('a').clone());
+  });
+  $('.breadcrumb').html($select.prepend('<li><a>Catalogue</a></li>'));
+});
+'use strict';
+
+var $promoBtn = $('.presentation-btn');
+var $filterPromo = $('input[id="promotion"]');
+
+$promoBtn.on('click', function () {
+    $(document).ready(function () {
+        $filterPromo.checked = true;
+    });
+});
+'use strict';
+
+var $dropdownButton = $('.dropdown-menu--button');
+var $toggleMenuMobile = $('.js-menu-toggler');
+var $dropdownMenu = $('.dropdown-menu');
+var $exitDropdown = $('.exit-dropdown');
+var $dropdownMenuAnchors = $('.categories a');
+var $pages = $('.page');
+var $searchInput = $('.input-search');
+var $searchImg = $('.input-img');
+
+$dropdownButton.on('click', function () {
+    $dropdownMenu.removeClass('hidden');
+    $dropdownMenu.addClass('lazyload');
+    $pages.css('filter', 'blur(0.5rem)');
+});
+
+$exitDropdown.on('click', function () {
+    $dropdownMenu.addClass('hidden');
+    $dropdownMenu.removeClass('lazyload');
+    $pages.css('filter', 'unset');
+});
+
+$dropdownMenuAnchors.on('click', function () {
+    $dropdownMenu.addClass('hidden');
+    $dropdownMenu.removeClass('lazyload');
+    $pages.css('filter', 'unset');
+});
+
+$toggleMenuMobile.on('click', function () {
+    var togglerInner = $('#toggler');
+
+    if ($dropdownMenu.hasClass('hidden')) {
+        togglerInner.removeClass('header-toggler-inner--close');
+        togglerInner.addClass('header-toggler-inner--open');
+        $dropdownMenu.removeClass('hidden');
+        $dropdownMenu.addClass('lazyload');
+    } else {
+        togglerInner.removeClass('header-toggler-inner--open');
+        togglerInner.addClass('header-toggler-inner--close');
+        $dropdownMenu.addClass('hidden');
+        $dropdownMenu.removeClass('lazyload');
+    }
+});
+
+$searchInput.on('click', function () {
+    $searchImg.addClass('hidden');
+});
+
+$searchInput.on('blur', function () {
+    $searchImg.removeClass('hidden');
+});
+
+$searchInput.on('input', function (e) {
+    var value = e.target.value;
+    $articlesList.forEach(function (article) {
+        var isVisible = article.name.includes(value);
+        document.getElementById(article.name).classList.toggle('hide', !isVisible);
+    });
+});

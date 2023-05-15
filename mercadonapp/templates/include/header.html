@@ -15,9 +15,7 @@
         <div class="categories">
             {% for category in categories %}
                 <div class="category">
-                    <a>
-                        <h2>{{ category.name }}</h2>
-                    </a>
+                    <a><h2>{{ category.name }}</h2></a>
                     <div class="subcategory">
                         {% for subcategory in category.subcategories %}
                             <a>{{ subcategory }}</a>
@@ -37,8 +35,8 @@
     </div>
     <div class="header-search">
         <label>
-            <input class="input-search" type="text">
-            <img src="{{ url_for('static', filename='img/header/search.png') }}" alt="">
+            <input class="input-search" type="text" data-search>
+            <img class="input-img" src="{{ url_for('static', filename='img/header/search.png') }}" alt="">
         </label>
     </div>
 </nav>

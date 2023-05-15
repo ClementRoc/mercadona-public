@@ -6,12 +6,8 @@
     <div class="filter">
         <div class="filter-breadcrumb lazyslow-left">
             <nav aria-label="Breadcrumb" class="breadcrumb">
-                <ul>
-                    <li><a>Home</a></li>
-                    <li><a>Category</a></li>
-                    <li><a>Sub Category</a></li>
-                    <li><a>Type</a></li>
-                    <li><span aria-current="page">Product</span></li>
+                <ul class="breadcrumb-display">
+                    <li><a>Catalogue</a></li>
                 </ul>
             </nav>
         </div>
@@ -53,7 +49,7 @@
     </div>
     <div class="catalog lazyslow-down">
         {% for article in articles %}
-            <div id="article" class="article" data-category="{% for filter in article.filters %}{{ filter.class }} {% endfor %}">
+            <div class="article" id="{{ article.product }}" data-category="{% for filter in article.filters %} {{ filter.class }} {% endfor %}" data-price="{% if article.promotion_percentage is not none %} {{ article.promoted_price }} {% else %} {{ article.price }} {% endif %}">
                 {% if article.promotion_start is not none %}
                     <span class="article-promotion K2D-paragraph">{{ article.promotion_start }} - {{ article.promotion_end }}</span>
                 {% endif %}
@@ -67,7 +63,7 @@
                 </div>
                 <div class="article-title">
                     <h3>{{ article.brand }}</h3>
-                    <p class="K2D-paragraph">{{ article.product }}</p>
+                    <p class="K2D-paragraph" id="name">{{ article.product }}</p>
                 </div>
                 <div class="article-description">
                     <p>{{ article.description }}</p>
@@ -91,8 +87,22 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="pagination">
-
-        </div>
     </div>
+{#    <nav aria-label="Page navigation example">#}
+{#        <ul class="pagination">#}
+{#            <li class="page-item">#}
+{#                <a class="page-link previous" href="#" aria-label="Previous">#}
+{#                    <span aria-hidden="true">&laquo;</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="page-item"><a class="page-link" href="#">1</a></li>#}
+{#            <li class="page-item"><a class="page-link" href="#">2</a></li>#}
+{#            <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+{#            <li class="page-item">#}
+{#                <a class="page-link next" href="#" aria-label="Next">#}
+{#                    <span aria-hidden="true">&raquo;</span>#}
+{#                </a>#}
+{#            </li>#}
+{#        </ul>#}
+{#    </nav>#}
 {% endblock %}
