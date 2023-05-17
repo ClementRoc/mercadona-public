@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from mercadonapp.database import fetch_articles, get_categories, get_articles
+from mercadonapp.database import get_categories, get_articles
 
 
 mod = Blueprint('catalog', __name__)
@@ -11,5 +11,5 @@ def catalog():
         'catalog.html',
         title='Catalogue',
         categories=get_categories(),
-        articles=fetch_articles()
+        articles=get_articles()
     )

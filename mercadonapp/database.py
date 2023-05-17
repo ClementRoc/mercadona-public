@@ -13,6 +13,7 @@ def adapt_dict(dict_var):
 
 register_adapter(dict, adapt_dict)
 
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
@@ -20,20 +21,22 @@ def init_db():
     with app.app_context():
         db.drop_all()
         db.create_all()
-        db.session.commit()
+        fetch_articles()
 
 
 client = Client(config.CONTENTFUL_SPACE_ID, config.CONTENTFUL_ACCESS_TOKEN)
 
 
 class Article(db.Model):
+    __tablename__ = "article"
+
     id = db.Column(db.Integer, primary_key=True)
     image = db.Column(db.String, nullable=False)
     brand = db.Column(db.String(50), nullable=False)
     product = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String, nullable=False)
-    filters = db.relationship('filter', backref='article')
-    tags = db.relationship('tag', backref='article')
+    filters = db.relationship('Filter', backref='article')
+    tags = db.relationship('Tag', backref='article')
     categories = db.Column(db.String, nullable=False)
     subcategories = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
@@ -42,7 +45,8 @@ class Article(db.Model):
     promotion_start = db.Column(db.String, nullable=True)
     promotion_end = db.Column(db.String, nullable=True)
 
-    def __init__(self, image, brand, product, description, filters, tags, categories, subcategories, price, promotion_percentage, promoted_price, promotion_start, promotion_end):
+    def __init__(self, image, brand, product, description, filters, tags, categories, subcategories, price,
+                 promotion_percentage, promoted_price, promotion_start, promotion_end):
         self.image = image
         self.brand = brand
         self.product = product
@@ -59,6 +63,8 @@ class Article(db.Model):
 
 
 class Filter(db.Model):
+    __tablename__ = "filter"
+
     id = db.Column(db.Integer, primary_key=True)
     classe = db.Column(db.String, nullable=False)
     name = db.Column(db.String, nullable=False)
@@ -70,6 +76,8 @@ class Filter(db.Model):
 
 
 class Tag(db.Model):
+    __tablename__ = "tag"
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     article_id = db.Column(db.Integer, db.ForeignKey('article.id'))
@@ -96,19 +104,20 @@ def fetch_articles():
             'categories': [],
             'subcategories': [],
             'filters': [],
+            'tags': [],
             'price': entry.price,
         }
 
         if hasattr(entry, 'filters'):
             for filter_name in entry.filters:
                 if filter_name == 'Frais':
-                    f = {'class': 'cold', 'name': 'FRAIS'}
+                    f = Filter('cold', 'FRAIS')
                     article['filters'].append(f)
                 elif filter_name == 'Surgelé':
-                    f = {'class': 'frozen', 'name': 'GEL'}
+                    f = Filter('frozen', 'GEL')
                     article['filters'].append(f)
                 elif filter_name == 'Bio':
-                    f = {'class': 'bio', 'name': 'BIO'}
+                    f = Filter('bio', 'BIO')
                     article['filters'].append(f)
         else:
             article['filters'] = []
@@ -120,9 +129,11 @@ def fetch_articles():
             article['subcategories'].append(subcategory.name)
 
         if hasattr(entry, 'tags'):
-            article['tags'] = entry.tags
+            for tag in entry.tags:
+                t = Tag(tag)
+                article['tags'].append(t)
         else:
-            article['tags'] = None
+            article['tags'] = []
 
         if hasattr(entry, 'promotion'):
             article['promotion_percentage'] = entry.promotion.percentage
@@ -132,7 +143,7 @@ def fetch_articles():
                 '{:02d}'.format(entry.promotion.start.month))
             article['promotion_end'] = str(entry.promotion.end.day) + '/' + str(
                 '{:02d}'.format(entry.promotion.start.month))
-            f = {'class': 'promotion', 'name': '-' + str(entry.promotion.percentage) + '%'}
+            f = Filter('promotion', '-' + str(entry.promotion.percentage) + '%')
             article['filters'].append(f)
         else:
             article['promotion_percentage'] = None
@@ -142,12 +153,10 @@ def fetch_articles():
 
         articles_list.append(article)
 
-    return articles_list
+    return hydrate_articles(articles_list)
 
 
-def get_articles():
-    articles = fetch_articles()
-
+def hydrate_articles(articles):
     for article in articles:
         a = Article(
             article['image'],
@@ -166,8 +175,11 @@ def get_articles():
         )
 
         db.session.add(a)
-        db.session.commit()
 
+    return db.session.commit()
+
+
+def get_articles():
     return Article.query.all()
 
 

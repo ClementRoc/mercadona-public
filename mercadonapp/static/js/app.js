@@ -8,7 +8,6 @@ var $toggleMenuMobile = $('.js-menu-toggler');
 var $dropdownMenu = $('.dropdown-menu');
 var $exitDropdown = $('.exit-dropdown');
 var $dropdownMenuAnchors = $('.categories a');
-var $breadcrumbAnchors = $('.breadcrumb a');
 var $pages = $('.page');
 var $searchInput = $('.input-search');
 var $searchImg = $('.input-img');
@@ -31,7 +30,7 @@ $dropdownMenuAnchors.on('click', function () {
     $pages.css('filter', 'unset');
     var $select = $('<div class="breadcrumb-display"></div>');
     $(this).parents('li').each(function (n, li) {
-        $select.prepend($(li).children('a').clone());
+        $select.prepend($(li).children('a').clone().removeClass());
     });
     $('.breadcrumb').html($select.prepend('<a>Catalogue</a>'));
 });
@@ -133,17 +132,20 @@ $filterPrice.on('change', function (e) {
     });
 });
 
-$articlesList.forEach(function (article) {
-    var isVisible = article.categories.includes($breadcrumbResult[0].innerText);
-    document.getElementById(article.name).classList.toggle('hide', !isVisible);
-});
+// $breadcrumbResult[0].addEventListener('DOMCharacterDataModified', function(){
+//     const value = document.getElementsByClassName('breadcrumb-display')[0].innerText.split('\n').join(' ')
+//     $articlesList.forEach(article => {
+//         const isVisible = article.categories.includes(value)
+//         document.getElementById(article.name).classList.toggle('hide', !isVisible)
+//     })
+// })
 'use strict';
 
 var $promoBtn = $('.presentation-btn');
 var $filterPromo = $('input[id="promotion"]');
 
 $promoBtn.on('click', function () {
-    $(document).ready(function () {
+    window.on('load', function () {
         $filterPromo.checked = true;
     });
 });

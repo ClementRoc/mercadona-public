@@ -49,7 +49,7 @@
     </div>
     <div class="catalog lazyslow-down">
         {% for article in articles %}
-            <div class="article" id="{{ article.product }}" data-name="{{ article.brand }}" data-category="Catalogue {% for category in article.categories %} {{ category }} {% endfor %}" data-filters="{% for filter in article.filters %} {{ filter.class }} {% endfor %}" data-price="{% if article.promotion_percentage is not none %} {{ article.promoted_price }} {% else %} {{ article.price }} {% endif %}">
+            <div class="article" id="{{ article.product }}" data-name="{{ article.brand }}" data-category="Catalogue {% for category in article.categories %}{{ category }}{% endfor %}" data-filters="{% for filter in article.filters %} {{ filter.classe }} {% endfor %}" data-price="{% if article.promotion_percentage is not none %} {{ article.promoted_price }} {% else %} {{ article.price }} {% endif %}">
                 {% if article.promotion_start is not none %}
                     <span class="article-promotion K2D-paragraph">{{ article.promotion_start }} - {{ article.promotion_end }}</span>
                 {% endif %}
@@ -57,7 +57,7 @@
                 <div class="article-badges">
                     {% if article.filters is not none %}
                         {% for filter in article.filters %}
-                            <span class="badge-{{ filter.class }} K2D-paragraph">{{ filter.name }}</span>
+                            <span class="badge-{{ filter.classe }} K2D-paragraph">{{ filter.name }}</span>
                         {% endfor %}
                     {% endif %}
                 </div>
@@ -72,7 +72,7 @@
                     <div class="tags">
                         {% if article.tags is not none %}
                             {% for tag in article.tags %}
-                                <button>{{ tag }}</button>
+                                <button>{{ tag.name }}</button>
                             {% endfor %}
                         {% endif %}
                     </div>
