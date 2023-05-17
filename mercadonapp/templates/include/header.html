@@ -12,18 +12,17 @@
     </div>
     <div class="dropdown-menu hidden">
         <a class="dropdown-menu--mobile" href="{{ url_for('catalog.catalog') }}">Catalogue</a>
-        <div class="categories">
+        <ol class="categories">
             {% for category in categories %}
-                <div class="category">
-                    <a><h2>{{ category.name }}</h2></a>
-                    <div class="subcategory">
+                <li class="category"><a class="category-h2">{{ category.name }}</a>
+                    <ul class="subcategory">
                         {% for subcategory in category.subcategories %}
-                            <a>{{ subcategory }}</a>
+                            <li><a>{{ subcategory }}</a></li>
                         {% endfor %}
-                    </div>
-                </div>
+                    </ul>
+                </li>
             {% endfor %}
-        </div>
+        </ol>
         <span class="exit-dropdown">
             <img class="exit-img" src="{{ url_for('static', filename='img/header/exit.png') }}">
         </span>

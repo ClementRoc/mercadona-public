@@ -3,72 +3,12 @@
 
 'use strict';
 
-var $filterCheckboxes = $('input[type="checkbox"]');
-var $articles = $('.article');
-var $articlesList = [];
-
-function Article(name, price, categories) {
-  this.name = name;
-  this.price = price;
-  this.categories = categories;
-}
-
-for (var i = 0; i < $articles.length; i++) {
-  $articlesList.push(new Article($articles[i].getAttribute('id'), $articles[i].getAttribute('data-price'), $articles[i].getAttribute('data-category')));
-}
-
-$filterCheckboxes.on('change', function () {
-  var selectedFilters = {};
-
-  $filterCheckboxes.filter(':checked').each(function () {
-    if (!selectedFilters.hasOwnProperty(this.name)) {
-      selectedFilters[this.name] = [];
-    }
-    selectedFilters[this.name].push(this.value);
-  });
-
-  var $filteredResults = $('.article');
-
-  $.each(selectedFilters, function (name, filterValues) {
-    $filteredResults = $filteredResults.filter(function () {
-      var matched = false,
-          currentFilterValues = $(this).data('category').split(' ');
-      $.each(currentFilterValues, function (_, currentFilterValue) {
-        if ($.inArray(currentFilterValue, filterValues) != -1) {
-          matched = true;
-          return false;
-        }
-      });
-      return matched;
-    });
-  });
-  $('.article').hide().filter($filteredResults).show();
-});
-
-$('.categories a').on('click', function () {
-  var $select = $('.breadcrumb-display');
-  $(this).each(function (n, li) {
-    $select.prepend($(li).children('a').clone());
-  });
-  $('.breadcrumb').html($select.prepend('<li><a>Catalogue</a></li>'));
-});
-'use strict';
-
-var $promoBtn = $('.presentation-btn');
-var $filterPromo = $('input[id="promotion"]');
-
-$promoBtn.on('click', function () {
-    $(document).ready(function () {
-        $filterPromo.checked = true;
-    });
-});
-'use strict';
-
 var $dropdownButton = $('.dropdown-menu--button');
 var $toggleMenuMobile = $('.js-menu-toggler');
 var $dropdownMenu = $('.dropdown-menu');
 var $exitDropdown = $('.exit-dropdown');
 var $dropdownMenuAnchors = $('.categories a');
+var $breadcrumbAnchors = $('.breadcrumb a');
 var $pages = $('.page');
 var $searchInput = $('.input-search');
 var $searchImg = $('.input-img');
@@ -89,6 +29,11 @@ $dropdownMenuAnchors.on('click', function () {
     $dropdownMenu.addClass('hidden');
     $dropdownMenu.removeClass('lazyload');
     $pages.css('filter', 'unset');
+    var $select = $('<div class="breadcrumb-display"></div>');
+    $(this).parents('li').each(function (n, li) {
+        $select.prepend($(li).children('a').clone());
+    });
+    $('.breadcrumb').html($select.prepend('<a>Catalogue</a>'));
 });
 
 $toggleMenuMobile.on('click', function () {
@@ -118,7 +63,87 @@ $searchInput.on('blur', function () {
 $searchInput.on('input', function (e) {
     var value = e.target.value;
     $articlesList.forEach(function (article) {
-        var isVisible = article.name.includes(value);
+        var isVisible = article.name.toLowerCase().includes(value.toLowerCase()) || article.brand.toLowerCase().includes(value.toLowerCase());
         document.getElementById(article.name).classList.toggle('hide', !isVisible);
+    });
+});
+'use strict';
+
+var $filterCheckboxes = $('input[type="checkbox"]');
+var $filterPrice = $('.sort');
+var $breadcrumbResult = $('.breadcrumb-display');
+var $articles = $('.article');
+var $articlesList = [];
+
+function Article(name, brand, price, filters, categories) {
+    this.name = name;
+    this.brand = brand;
+    this.price = price;
+    this.filters = filters;
+    this.categories = categories;
+}
+
+for (var i = 0; i < $articles.length; i++) {
+    $articlesList.push(new Article($articles[i].getAttribute('id'), $articles[i].getAttribute('data-name'), $articles[i].getAttribute('data-price'), $articles[i].getAttribute('data-filters'), $articles[i].getAttribute('data-category')));
+}
+
+$filterCheckboxes.on('change', function () {
+    var selectedFilters = {};
+
+    $filterCheckboxes.filter(':checked').each(function () {
+        if (!selectedFilters.hasOwnProperty(this.name)) {
+            selectedFilters[this.name] = [];
+        }
+        selectedFilters[this.name].push(this.value);
+    });
+
+    var $filteredResults = $('.article');
+
+    $.each(selectedFilters, function (name, filterValues) {
+        $filteredResults = $filteredResults.filter(function () {
+            var matched = false,
+                currentFilterValues = $(this).data('filters').split(' ');
+            $.each(currentFilterValues, function (_, currentFilterValue) {
+                if ($.inArray(currentFilterValue, filterValues) != -1) {
+                    matched = true;
+                    return false;
+                }
+            });
+            return matched;
+        });
+    });
+    $articles.hide().filter($filteredResults).show();
+});
+
+$filterPrice.on('change', function (e) {
+    var value = e.target.value;
+    if (value === "ascending-price") {
+        $articlesList.sort(function (a, b) {
+            return a.price > b.price ? 1 : -1;
+        });
+    } else if (value === "descending-price") {
+        $articlesList.sort(function (a, b) {
+            return a.price < b.price ? 1 : -1;
+        });
+    } else {}
+    $articlesList.forEach(function (article) {
+        document.getElementById(article.name).style.order = $articlesList.findIndex(function (i) {
+            return i.name === article.name;
+        });
+    });
+});
+
+$articlesList.forEach(function (article) {
+    var isVisible = article.categories.includes($breadcrumbResult[0].innerText);
+    document.getElementById(article.name).classList.toggle('hide', !isVisible);
+});
+'use strict';
+
+var $promoBtn = $('.presentation-btn');
+var $filterPromo = $('input[id="promotion"]');
+
+$promoBtn.on('click', function () {
+    $(document).ready(function () {
+        $filterPromo.checked = true;
     });
 });
