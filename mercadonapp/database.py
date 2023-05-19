@@ -16,7 +16,6 @@ Initialize the database
 
 def init_db():
     with app.app_context():
-        db.drop_all()
         db.create_all()
         fetch_articles()
         migrate.init_app(app, db)
