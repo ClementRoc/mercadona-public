@@ -1,5 +1,7 @@
 'use strict';
 
+// Define all the variables
+// Fetch the package.json extensions
 var gulp = require('gulp'),
     sass = require('gulp-sass')(require('sass')),
     rename = require('gulp-rename'),
@@ -13,6 +15,8 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     webp = require('gulp-webp');
 
+
+// Define the paths for the project
 var paths = {
     src: './assets/',
     dest: './static/',
@@ -20,14 +24,17 @@ var paths = {
     npm: 'node_modules/'
 };
 
+// Minify (compress) the CSS files
 var minifyIfNeeded = function (alwaysMinify) {
-    return alwaysMinify === true || gutil.env.env === 'prod' || gutil.env.env === 'preprod' ? cleanCSS({processImport: false}) : gutil.noop();
+    return alwaysMinify === true ? cleanCSS({processImport: false}) : gutil.noop();
 }
 
+// Uglify (Parse) the JS files
 var uglifyIfNeeded = function(alwaysUglify) {
-    return alwaysUglify === true || gutil.env.env === 'prod' || gutil.env.env === 'preprod' ? uglify() : gutil.noop();
+    return alwaysUglify === true ? uglify() : gutil.noop();
 }
 
+// Simple error handler
 var errorHandler = function (err) {
     if (typeof err.file !== 'undefined') {
         console.log(err.file, err.line, err.messageOriginal);
@@ -37,6 +44,9 @@ var errorHandler = function (err) {
     this.emit('end');
 }
 
+// Gulp task for the JS files.
+// Get all the .js files in Assets folder (private) and compress it in a single .js file
+// put on the Static folder (public)
 gulp.task('js', function () {
     return gulp.src(paths.src + 'js/**/*.*')
         .pipe(plumber({ errorHandler: errorHandler }))
@@ -49,11 +59,16 @@ gulp.task('js', function () {
         .pipe(gulp.dest(paths.dest + 'js'));
 });
 
+// Gulp task for the fonts
+// Get all the fonts files in Assets folder (private) and put in on the Static folder (public)
 gulp.task('fonts', function() {
     return gulp.src(paths.src + 'fonts/*')
         .pipe(gulp.dest(paths.dest + 'fonts'));
 });
 
+// Gulp task for the CSS files.
+// Get all the .scss files in Assets folder (private) and compress it in a single .css file
+// put on the Static folder (public)
 gulp.task('css', function () {
     return gulp.src(paths.src + 'scss/app.scss')
         .pipe(plumber({ errorHandler: errorHandler }))
@@ -64,6 +79,9 @@ gulp.task('css', function () {
         .pipe(gulp.dest(paths.dest + 'css'));
 });
 
+// Gulp task for the CSS-fonts files.
+// Get all the .scss files in Assets folder (private) and compress it in a single .css file
+// put on the Static folder (public)
 gulp.task('css-fonts', function () {
     return gulp.src(paths.src + 'scss/fonts.scss')
         .pipe(plumber({ errorHandler: errorHandler }))
@@ -73,15 +91,17 @@ gulp.task('css-fonts', function () {
         .pipe(gulp.dest(paths.dest + 'css'));
 });
 
-gulp.task('webp', function() {
-    return gulp.src([paths.src + 'img/**/*.{jpg,jpeg,png}'])
-        .pipe(rename({
-            extname: '.webp',
-        }))
-        .pipe(webp({ quality: 80 }))
-        .pipe(gulp.dest(paths.imgDest));
-});
+// gulp.task('webp', function() {
+//     return gulp.src([paths.src + 'img/**/*.{jpg,jpeg,png}'])
+//         .pipe(rename({
+//             extname: '.webp',
+//         }))
+//         .pipe(webp({ quality: 80 }))
+//         .pipe(gulp.dest(paths.imgDest));
+// });
 
+// Gulp task for the images
+// Get all the images files in Assets folder (private) and put in on the Static folder (public)
 gulp.task('image', function() {
     return gulp.src([paths.src + 'img/**/*.{jpg,jpeg,png}'])
         .pipe(gulp.dest(paths.imgDest));
@@ -98,6 +118,7 @@ process.on('SIGINT', function() {
     process.exit();
 });
 
-exports.default = gulp.series(['css', 'js', 'image', 'webp', 'fonts', 'css-fonts'])
+// Define the tasks when you call the gulp by default
+exports.default = gulp.series(['css', 'js', 'image', 'fonts', 'css-fonts'])
 
 

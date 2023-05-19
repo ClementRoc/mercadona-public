@@ -1,31 +1,30 @@
-import json
 import config
 
 from mercadonapp import app
 from contentful import Client
 from flask_sqlalchemy import SQLAlchemy
-from psycopg2.extensions import register_adapter, AsIs
-
-
-def adapt_dict(dict_var):
-    return AsIs("'" + json.dumps(dict_var) + "'")
-
-
-register_adapter(dict, adapt_dict)
+from flask_migrate import Migrate
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+client = Client(config.CONTENTFUL_SPACE_ID, config.CONTENTFUL_ACCESS_TOKEN)
 
+"""
+Initialize the database
+"""
 
 def init_db():
     with app.app_context():
         db.drop_all()
         db.create_all()
         fetch_articles()
+        migrate.init_app(app, db)
 
 
-client = Client(config.CONTENTFUL_SPACE_ID, config.CONTENTFUL_ACCESS_TOKEN)
-
+"""
+Article class to define the table in SQL
+"""
 
 class Article(db.Model):
     __tablename__ = "article"
@@ -62,6 +61,10 @@ class Article(db.Model):
         self.promotion_end = promotion_end
 
 
+"""
+Filter class to define the table in SQL
+"""
+
 class Filter(db.Model):
     __tablename__ = "filter"
 
@@ -75,6 +78,10 @@ class Filter(db.Model):
         self.name = name
 
 
+"""
+Tag class to define the table in SQL
+"""
+
 class Tag(db.Model):
     __tablename__ = "tag"
 
@@ -85,6 +92,11 @@ class Tag(db.Model):
     def __init__(self, name):
         self.name = name
 
+"""
+Fetch the articles on Contentful and put them all in an Array,
+Hydrate the database based on the hydrate_articles function,
+Return an Article class
+"""
 
 def fetch_articles():
     articles = client.entries(
@@ -156,6 +168,10 @@ def fetch_articles():
     return hydrate_articles(articles_list)
 
 
+"""
+Hydrate the articles, turn the Array into an Article class
+"""
+
 def hydrate_articles(articles):
     for article in articles:
         a = Article(
@@ -179,9 +195,18 @@ def hydrate_articles(articles):
     return db.session.commit()
 
 
+"""
+Get all the articles for the database
+"""
+
 def get_articles():
     return Article.query.all()
 
+
+"""
+Get all the categories on Contentful
+Return an Array
+"""
 
 def get_categories():
     categories = client.entries(

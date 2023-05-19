@@ -4,6 +4,10 @@ from mercadonapp.database import get_categories
 mod = Blueprint('home', __name__)
 
 
+"""
+Homepage routing and variables
+"""
+
 @mod.route('/', methods=['GET'])
 def home():
     return render_template(

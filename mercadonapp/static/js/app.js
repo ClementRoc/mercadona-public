@@ -11,23 +11,31 @@ var $dropdownMenuAnchors = $('.categories a');
 var $pages = $('.page');
 var $searchInput = $('.input-search');
 var $searchImg = $('.input-img');
+var $url = location.href;
 
+// Trigger the dropdown menu
 $dropdownButton.on('click', function () {
     $dropdownMenu.removeClass('hidden');
     $dropdownMenu.addClass('lazyload');
     $pages.css('filter', 'blur(0.5rem)');
 });
 
+// Shutdown the dropdown menu
 $exitDropdown.on('click', function () {
     $dropdownMenu.addClass('hidden');
     $dropdownMenu.removeClass('lazyload');
     $pages.css('filter', 'unset');
 });
 
+// Shutdown the dropdown menu and put the link clicked on the breadcrumb display
+// If the current page is home, you will be relocated to the catalog page
 $dropdownMenuAnchors.on('click', function () {
     $dropdownMenu.addClass('hidden');
     $dropdownMenu.removeClass('lazyload');
     $pages.css('filter', 'unset');
+    if ($pages.hasClass('page-home')) {
+        location.assign($url + 'catalogue');
+    }
     var $select = $('<div class="breadcrumb-display"></div>');
     $(this).parents('li').each(function (n, li) {
         $select.prepend($(li).children('a').clone().removeClass());
@@ -35,6 +43,7 @@ $dropdownMenuAnchors.on('click', function () {
     $('.breadcrumb').html($select.prepend('<a>Catalogue</a>'));
 });
 
+// Toggle the mobile hamburger menu on mobile version of the website
 $toggleMenuMobile.on('click', function () {
     var togglerInner = $('#toggler');
 
@@ -51,14 +60,19 @@ $toggleMenuMobile.on('click', function () {
     }
 });
 
+// Hide the searchbar image
 $searchInput.on('click', function () {
     $searchImg.addClass('hidden');
 });
 
+// Show the searchbar image when the searchbar is unfocused and empty
 $searchInput.on('blur', function () {
-    $searchImg.removeClass('hidden');
+    if (!$searchInput[0].value) {
+        $searchImg.removeClass('hidden');
+    }
 });
 
+// Searchbar function, it shows the result and hide the article not concerned
 $searchInput.on('input', function (e) {
     var value = e.target.value;
     $articlesList.forEach(function (article) {
@@ -74,6 +88,7 @@ var $breadcrumbResult = $('.breadcrumb-display');
 var $articles = $('.article');
 var $articlesList = [];
 
+// Article class
 function Article(name, brand, price, filters, categories) {
     this.name = name;
     this.brand = brand;
@@ -82,10 +97,13 @@ function Article(name, brand, price, filters, categories) {
     this.categories = categories;
 }
 
+// Fetch all articles based on the HTML
 for (var i = 0; i < $articles.length; i++) {
     $articlesList.push(new Article($articles[i].getAttribute('id'), $articles[i].getAttribute('data-name'), $articles[i].getAttribute('data-price'), $articles[i].getAttribute('data-filters'), $articles[i].getAttribute('data-category')));
 }
 
+// Filter function to show articles based on the checkboxes
+// [Promotion, Cold, Frozen and Bio]
 $filterCheckboxes.on('change', function () {
     var selectedFilters = {};
 
@@ -114,6 +132,8 @@ $filterCheckboxes.on('change', function () {
     $articles.hide().filter($filteredResults).show();
 });
 
+// Filter function to show articles based on price
+// [Ascending, Descending]
 $filterPrice.on('change', function (e) {
     var value = e.target.value;
     if (value === "ascending-price") {
@@ -132,6 +152,7 @@ $filterPrice.on('change', function (e) {
     });
 });
 
+// Show article based on the breadcrumb categories
 // $breadcrumbResult[0].addEventListener('DOMCharacterDataModified', function(){
 //     const value = document.getElementsByClassName('breadcrumb-display')[0].innerText.split('\n').join(' ')
 //     $articlesList.forEach(article => {
@@ -142,10 +163,9 @@ $filterPrice.on('change', function (e) {
 'use strict';
 
 var $promoBtn = $('.presentation-btn');
-var $filterPromo = $('input[id="promotion"]');
+var $filterPromo = $('input[id="promotion"]')[0];
 
+// Homepage promo button, get you to catalog page and check Promotion.
 $promoBtn.on('click', function () {
-    window.on('load', function () {
-        $filterPromo.checked = true;
-    });
+    $filterPromo.checked = true;
 });

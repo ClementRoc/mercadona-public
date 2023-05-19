@@ -4,8 +4,11 @@ from mercadonapp.database import get_categories, get_articles
 
 mod = Blueprint('catalog', __name__)
 
+"""
+Catalog page routing and variables
+"""
 
-@mod.route('/catalog', methods=['GET'])
+@mod.route('/catalogue', methods=['GET'])
 def catalog():
     return render_template(
         'catalog.html',
