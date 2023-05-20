@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from mercadonapp import internal_error
-from mercadonapp.database import get_categories, get_articles
+from mercadonapp.database import get_categories, fetch_articles
 
 
 mod = Blueprint('catalog', __name__)
@@ -16,7 +16,7 @@ def catalog():
             'catalog.html',
             title='Catalogue',
             categories=get_categories(),
-            articles=get_articles()
+            articles=fetch_articles()
         )
     except RuntimeError as e:
         return internal_error(e)

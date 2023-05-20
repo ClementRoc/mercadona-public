@@ -104,9 +104,8 @@ class Tag(db.Model):
 
 
 """
-Fetch the articles on Contentful and put them all in an Array,
-Hydrate the database based on the hydrate_articles function,
-Return an Article class
+Fetch the articles on Contentful and put them all in an Array
+Hydrate the database with the tables below and return the articles.
 """
 
 
@@ -128,8 +127,8 @@ def fetch_articles():
             'brand': entry.brand.upper(),
             'product': entry.product,
             'description': entry.description,
-            'categories': [],
-            'subcategories': [],
+            'categories': entry.categories.name,
+            'subcategories': entry.subcategories.name,
             'filters': [],
             'tags': [],
             'price': entry.price,
@@ -148,12 +147,6 @@ def fetch_articles():
                     article['filters'].append(f)
         else:
             article['filters'] = []
-
-        for category in entry.categories:
-            article['categories'].append(category.name)
-
-        for subcategory in entry.subcategories:
-            article['subcategories'].append(subcategory.name)
 
         if hasattr(entry, 'tags'):
             for tag in entry.tags:
@@ -181,7 +174,9 @@ def fetch_articles():
 
         articles_list.append(article)
 
-    return hydrate_articles(articles_list)
+    hydrate_articles(articles_list)
+
+    return Article.query.all()
 
 
 """
@@ -191,34 +186,42 @@ Hydrate the articles, turn the Array into an Article class
 
 def hydrate_articles(articles):
     for article in articles:
-        a = Article(
-            article['image'],
-            article['brand'],
-            article['product'],
-            article['description'],
-            article['filters'],
-            article['tags'],
-            article['categories'],
-            article['subcategories'],
-            article['price'],
-            article['promotion_percentage'],
-            article['promoted_price'],
-            article['promotion_start'],
-            article['promotion_end']
-        )
+        article_database = Article.query.filter_by(product=article['product']).first()
 
-        db.session.add(a)
+        if not article_database:
+            a = Article(
+                article['image'],
+                article['brand'],
+                article['product'],
+                article['description'],
+                article['filters'],
+                article['tags'],
+                article['categories'],
+                article['subcategories'],
+                article['price'],
+                article['promotion_percentage'],
+                article['promoted_price'],
+                article['promotion_start'],
+                article['promotion_end']
+            )
+            db.session.add(a)
+
+        elif article_database in Article.query.all():
+            article_database.image = article['image']
+            article_database.brand = article['brand']
+            article_database.product = article['product']
+            article_database.description = article['description']
+            article_database.filters = article['filters']
+            article_database.tags = article['tags']
+            article_database.categories = article['categories']
+            article_database.subcategories = article['subcategories']
+            article_database.price = article['price']
+            article_database.promotion_percentage = article['promotion_percentage']
+            article_database.promoted_price = article['promoted_price']
+            article_database.promotion_start = article['promotion_start']
+            article_database.promotion_end = article['promotion_end']
 
     return db.session.commit()
-
-
-"""
-Get all the articles for the database
-"""
-
-
-def get_articles():
-    return Article.query.all()
 
 
 """

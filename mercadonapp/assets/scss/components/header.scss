@@ -9,6 +9,11 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 25%);
   background-color: white;
 
+  @include responsive-md {
+    padding: 0.5rem 3rem 0.5rem 3rem;
+    height: 12vh;
+  }
+
   @include responsive-xs {
     padding: 0.5rem 1.5rem 0.5rem 1.5rem;
     height: 12vh;
@@ -23,6 +28,11 @@
     cursor: pointer;
     padding: 0;
 
+    @include responsive-md{
+      display: flex;
+      right: 3rem;
+    }
+
     @include responsive-xs {
       display: flex;
       right: 1.5rem;
@@ -33,6 +43,11 @@
       border-radius: 25px;
       background-color: black;
 
+      @include responsive-md {
+        width: 48px;
+        height: 4px;
+      }
+
       @include responsive-xs {
         width: 32px;
         height: 4px;
@@ -42,6 +57,11 @@
     &-inner {
       position: relative;
       display: inline-block;
+
+      @include responsive-md {
+        width: 48px;
+        height: 35px;
+      }
 
       @include responsive-xs {
         width: 32px;
@@ -136,6 +156,10 @@
     width: 50%;
     gap: 8vw;
 
+    @include responsive-md {
+      display: none;
+    }
+
     @include responsive-xs {
       display: none;
     }
@@ -155,6 +179,19 @@
     border-radius: 5px;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 25%);
 
+    @include responsive-md{
+      top: 12vh;
+      left: 0;
+      transform: none;
+      width: 100%;
+      height: 100vh;
+      box-shadow: none;
+      border-radius: 0;
+      padding: 3rem;
+      justify-content: normal;
+      gap: 2rem;
+    }
+
     @include responsive-xs{
       top: 12vh;
       left: 0;
@@ -171,6 +208,13 @@
     &--mobile{
       display: none;
 
+      @include responsive-md {
+        display: block;
+        font-size: 30px;
+        font-weight: bold;
+        font-family: $font-josefin;
+      }
+
       @include responsive-xs{
         display: block;
         font-size: 20px;
@@ -184,9 +228,15 @@
       gap: 2rem;
       padding: 0;
       list-style: none;
+      justify-content: unset;
 
       a{
         cursor: pointer;
+      }
+
+      @include responsive-md{
+        justify-content: space-between;
+        width: 100%;
       }
 
       @include responsive-xs{
@@ -211,6 +261,10 @@
           padding: 0.5rem 1rem 0.5rem 1rem;
           font-size: 24px;
           font-family: $font-K2D;
+
+          @include responsive-md {
+            font-size: 30px;
+          }
         }
 
         .subcategory {
@@ -222,6 +276,10 @@
 
           a {
             text-decoration: underline;
+
+            @include responsive-md {
+              font-size: 20px;
+            }
           }
         }
       }
@@ -230,7 +288,7 @@
     .exit-dropdown {
       position: relative;
 
-      @include responsive-xs{
+      @include responsive-md{
         display: none;
       }
 
@@ -261,6 +319,10 @@
     display: flex;
     justify-content: flex-end;
     width: 50%;
+
+    @include responsive-md {
+      display: none;
+    }
 
     @include responsive-xs {
       display: none;

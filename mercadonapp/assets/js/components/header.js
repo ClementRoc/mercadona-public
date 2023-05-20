@@ -29,6 +29,8 @@ $dropdownMenuAnchors.on('click', function() {
     $dropdownMenu.removeClass('lazyload')
     $pages.css('filter', 'unset')
     if ($pages.hasClass('page-home')) {
+        localStorage.setItem('fromHomepage', 'true')
+        localStorage.setItem('anchor', $(this))
         location.assign($url + 'catalogue')
     }
     let $select = $('<div class="breadcrumb-display"></div>')
@@ -36,6 +38,11 @@ $dropdownMenuAnchors.on('click', function() {
         $select.prepend($(li).children('a').clone().removeClass())
     })
     $('.breadcrumb').html($select.prepend('<a>Catalogue</a>'))
+    const value = document.getElementsByClassName('breadcrumb-display')[0].innerText.split('\n').join(' ')
+    $articlesList.forEach(article => {
+        const isVisible = article.categories.includes(value)
+        document.getElementById(article.name).classList.toggle('hide', !isVisible)
+    })
 })
 
 // Toggle the mobile hamburger menu on mobile version of the website

@@ -34,6 +34,8 @@ $dropdownMenuAnchors.on('click', function () {
     $dropdownMenu.removeClass('lazyload');
     $pages.css('filter', 'unset');
     if ($pages.hasClass('page-home')) {
+        localStorage.setItem('fromHomepage', 'true');
+        localStorage.setItem('anchor', $(this));
         location.assign($url + 'catalogue');
     }
     var $select = $('<div class="breadcrumb-display"></div>');
@@ -41,6 +43,11 @@ $dropdownMenuAnchors.on('click', function () {
         $select.prepend($(li).children('a').clone().removeClass());
     });
     $('.breadcrumb').html($select.prepend('<a>Catalogue</a>'));
+    var value = document.getElementsByClassName('breadcrumb-display')[0].innerText.split('\n').join(' ');
+    $articlesList.forEach(function (article) {
+        var isVisible = article.categories.includes(value);
+        document.getElementById(article.name).classList.toggle('hide', !isVisible);
+    });
 });
 
 // Toggle the mobile hamburger menu on mobile version of the website
@@ -84,9 +91,10 @@ $searchInput.on('input', function (e) {
 
 var $filterCheckboxes = $('input[type="checkbox"]');
 var $filterPrice = $('.sort');
-var $breadcrumbResult = $('.breadcrumb-display');
+var $breadcrumbDisplay = $('.breadcrumb-display a');
 var $articles = $('.article');
 var $articlesList = [];
+var $filterPromo = $('input[id="promotion"]');
 
 // Article class
 function Article(name, brand, price, filters, categories) {
@@ -153,19 +161,45 @@ $filterPrice.on('change', function (e) {
 });
 
 // Show article based on the breadcrumb categories
-// $breadcrumbResult[0].addEventListener('DOMCharacterDataModified', function(){
-//     const value = document.getElementsByClassName('breadcrumb-display')[0].innerText.split('\n').join(' ')
-//     $articlesList.forEach(article => {
-//         const isVisible = article.categories.includes(value)
-//         document.getElementById(article.name).classList.toggle('hide', !isVisible)
-//     })
-// })
+$breadcrumbDisplay.on('click', function () {
+    var $select = Array.from($('.breadcrumb-display')[0].children);
+    // let $clickValue = this
+    $select.splice(0, 1).join();
+    $('.breadcrumb-display')[0].innerHTML = $select;
+    var value = document.getElementsByClassName('breadcrumb-display')[0].innerText.split('\n').join(' ');
+    $articlesList.forEach(function (article) {
+        var isVisible = article.categories.includes(value);
+        document.getElementById(article.name).classList.toggle('hide', !isVisible);
+    });
+});
+
+// Check if the localStorage clicked button is on true and click the promotion checkbox if true
+$(document).ready(function () {
+    var clicked = localStorage.getItem('click');
+    var dropdownMenuHomepage = localStorage.getItem('fromHomepage');
+    var anchor = localStorage.getItem('anchor');
+    if (clicked === 'true') {
+        $filterPromo.click();
+        localStorage.setItem('click', 'false');
+    }
+    if (dropdownMenuHomepage === 'true') {
+        var $select = $('<div class="breadcrumb-display"></div>');
+        $(anchor).parents('li').each(function (n, li) {
+            $select.prepend($(li).children('a').clone().removeClass());
+        });
+        $('.breadcrumb').html($select.prepend('<a>Catalogue</a>'));
+        var value = document.getElementsByClassName('breadcrumb-display').innerText;
+        $articlesList.forEach(function (article) {
+            var isVisible = article.categories.includes(value);
+            document.getElementById(article.name).classList.toggle('hide', !isVisible);
+        });
+    }
+});
 'use strict';
 
 var $promoBtn = $('.presentation-btn');
-var $filterPromo = $('input[id="promotion"]')[0];
 
-// Homepage promo button, get you to catalog page and check Promotion.
+// Set the localStorage click on true when the homepage button is clicked
 $promoBtn.on('click', function () {
-    $filterPromo.checked = true;
+    localStorage.setItem('click', 'true');
 });

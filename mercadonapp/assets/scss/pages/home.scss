@@ -32,11 +32,24 @@
       flex-flow: column nowrap;
       align-items: flex-end;
 
-      @include responsive-xs {
+      @include responsive-md {
         background-color: hsla(0, 0%, 0%, 0.6);
         width: 100%;
+        height: 88vh;
+        padding: 4rem 3rem;
+      }
+
+      @include responsive-xs {
         height: 70vh;
-        padding: 4rem 1.5rem;
+        padding: 2rem 1.5rem;
+      }
+
+      .presentation-text{
+        font-size: 24px;
+
+        @include responsive-xs{
+          font-size: 18px;
+        }
       }
 
       .presentation-btn{
@@ -50,6 +63,13 @@
         position: absolute;
         bottom: 2rem;
         right: 3rem;
+
+        @include responsive-md{
+          bottom: 4rem;
+          right: 10rem;
+          left: 10rem;
+          text-align: center;
+        }
 
         @include responsive-xs{
           right: 5rem;

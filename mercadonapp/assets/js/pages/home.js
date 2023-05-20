@@ -1,7 +1,6 @@
 const $promoBtn = $('.presentation-btn')
-const $filterPromo = $('input[id="promotion"]')[0]
 
-// Homepage promo button, get you to catalog page and check Promotion.
+// Set the localStorage click on true when the homepage button is clicked
 $promoBtn.on('click', function() {
-    $filterPromo.checked = true
+    localStorage.setItem('click', 'true')
 })
