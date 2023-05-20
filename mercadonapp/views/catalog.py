@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from mercadonapp import internal_error
 from mercadonapp.database import get_categories, get_articles
 
 
@@ -10,9 +11,12 @@ Catalog page routing and variables
 
 @mod.route('/catalogue', methods=['GET'])
 def catalog():
-    return render_template(
-        'catalog.html',
-        title='Catalogue',
-        categories=get_categories(),
-        articles=get_articles()
-    )
+    try:
+        return render_template(
+            'catalog.html',
+            title='Catalogue',
+            categories=get_categories(),
+            articles=get_articles()
+        )
+    except RuntimeError as e:
+        return internal_error(e)

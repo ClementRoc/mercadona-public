@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 """
 Define the application and fetch the configuration settings
@@ -6,6 +6,29 @@ Define the application and fetch the configuration settings
 
 app = Flask(__name__)
 app.config.from_object('config')
+
+"""
+ErrorHandlers for 404 and 500.
+"""
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template(
+        'errors/404.html',
+        error=e,
+        title='Oupsi, un truc cloche !'
+    )
+
+
+@app.errorhandler(500)
+def internal_error(e):
+    return render_template(
+        'errors/500.html',
+        error=e,
+        title='Problème serveur'
+    )
+
 
 """
 Get the routing

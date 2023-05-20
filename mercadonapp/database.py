@@ -1,9 +1,15 @@
 import config
 
-from mercadonapp import app
+from mercadonapp import app, internal_error
 from contentful import Client
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+
+
+"""
+Configuration's variables
+"""
+
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
@@ -105,11 +111,14 @@ Return an Article class
 
 
 def fetch_articles():
-    articles = client.entries(
-        query={
-            'content_type': 'article'
-        }
-    )
+    try:
+        articles = client.entries(
+            query={
+                'content_type': 'article'
+            }
+        )
+    except (KeyError, TypeError) as e:
+        return internal_error(e)
 
     articles_list = []
 
@@ -219,11 +228,14 @@ Return an Array
 
 
 def get_categories():
-    categories = client.entries(
-        query={
-            'content_type': 'categories'
-        }
-    )
+    try:
+        categories = client.entries(
+            query={
+                'content_type': 'categories'
+            }
+        )
+    except (KeyError, TypeError) as e:
+        return internal_error(e)
 
     categories_list = []
 
