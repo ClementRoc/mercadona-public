@@ -3,17 +3,17 @@ import config
 from mercadonapp import app, internal_error
 from contentful import Client
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+
+# from flask_migrate import Migrate
 
 
 """
 Configuration's variables
 """
 
-
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+# migrate = Migrate(app, db)
 client = Client(config.CONTENTFUL_SPACE_ID, config.CONTENTFUL_ACCESS_TOKEN)
 
 """
@@ -26,7 +26,7 @@ def init_db():
         db.drop_all()
         db.create_all()
         fetch_articles()
-        migrate.init_app(app, db)
+        # migrate.init_app(app, db)
 
 
 """
