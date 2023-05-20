@@ -1,0 +1,76 @@
+.footer{
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 3rem;
+  background-color: $color-green-opacity;
+  justify-content: space-between;
+
+  @include responsive-xs{
+    flex-flow: row wrap-reverse;
+    padding: 2rem 1.5rem;
+    gap: 2rem;
+  }
+
+  div{
+    width: 23%;
+
+    @include responsive-xs{
+      width: 45%;
+    }
+  }
+
+  a{
+    color: white;
+    font-weight: lighter;
+  }
+
+  &-rgpd{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+  }
+
+  #rgpd-2{
+
+    @include responsive-xs{
+      text-align: end;
+    }
+  }
+
+  &-call{
+    display: flex;
+    flex-flow: column nowrap;
+
+    a{
+      font-size: 30px;
+      font-family: $font-K2D;
+
+      @include responsive-xs{
+        font-size: 16px;
+      }
+
+      .footer-img{
+        width: 2rem;
+      }
+    }
+
+    .rights{
+      color: white;
+      font-size: 12px;
+      font-weight: lighter;
+    }
+  }
+
+  &-social{
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+
+    @include responsive-xs{
+      flex-flow: row wrap;
+      gap: 2rem;
+      justify-content: flex-end;
+    }
+  }
+}

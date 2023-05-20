@@ -1,0 +1,53 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+    min-width: 100vw;
+    // HTML now takes the scrollbar in its width
+    min-height: 100vh;
+
+    &.html--no-scroll {
+        overflow-y: hidden;
+    }
+}
+
+body,
+html{
+  padding: 0;
+  margin: 0;
+  background-color: $background-color;
+  font-family: $font-josefin;
+}
+
+a{
+  text-decoration: none;
+  color: black;
+}
+
+p{
+  font-family: $font-josefin;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+  font-family: $font-K2D;
+}
+
+.K2D-paragraph{
+  font-family: $font-K2D;
+}
+
+.hidden{
+  opacity: 0;
+  visibility: hidden;
+}
+
+.hide{
+  display: none !important;
+}

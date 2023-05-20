@@ -1,0 +1,341 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  padding: 1rem 3rem 1rem 3rem;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 25%);
+  background-color: white;
+
+  @include responsive-xs {
+    padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+    height: 12vh;
+  }
+
+  &-toggler {
+    position: absolute;
+    display: none;
+    border: 0;
+    outline: none;
+    background: 0;
+    cursor: pointer;
+    padding: 0;
+
+    @include responsive-xs {
+      display: flex;
+      right: 1.5rem;
+    }
+
+    &-icon {
+      position: absolute;
+      border-radius: 25px;
+      background-color: black;
+
+      @include responsive-xs {
+        width: 32px;
+        height: 4px;
+      }
+    }
+
+    &-inner {
+      position: relative;
+      display: inline-block;
+
+      @include responsive-xs {
+        width: 32px;
+        height: 28px;
+      }
+
+      .header-toggler-icon {
+        &--top {
+          top: 0;
+        }
+
+        &--middle {
+          top: 43%;
+          margin: auto;
+        }
+
+        &--bottom {
+          bottom: 0;
+        }
+      }
+
+      &--close {
+        .header-toggler-icon {
+          &--top {
+            top: 0;
+            transform-origin: center;
+            animation-duration: .4s;
+            animation-fill-mode: forwards;
+
+            @include responsive-md {
+              animation-name: TogglerTopOpenToClose-md;
+            }
+
+            @include responsive-xs {
+              animation-name: TogglerTopOpenToClose-xs;
+            }
+          }
+
+          &--middle {
+            top: 45%;
+            animation-duration: .4s;
+            animation-fill-mode: forwards;
+            animation-name: TogglerMiddleOpenToClose;
+          }
+
+          &--bottom {
+            bottom: 0;
+            transform-origin: center;
+            animation-duration: .4s;
+            animation-fill-mode: forwards;
+            animation-name: TogglerBottomOpenToClose;
+          }
+        }
+      }
+
+      &--open {
+        .header-toggler-icon {
+          &--top {
+            top: 0;
+            transform-origin: center;
+            animation-duration: .4s;
+            animation-name: TogglerTopCloseToOpen;
+          }
+
+          &--middle {
+            top: 43%;
+            margin: auto;
+            animation-duration: .4s;
+            animation-name: TogglerMiddleCloseToOpen;
+          }
+
+          &--bottom {
+            bottom: 0;
+            animation-duration: .4s;
+            animation-name: TogglerBottomCloseToOpen;
+          }
+        }
+      }
+    }
+  }
+
+  span {
+    cursor: pointer;
+  }
+
+  &-menu {
+    display: flex;
+    flex-flow: row nowrap;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: $font-josefin;
+    width: 50%;
+    gap: 8vw;
+
+    @include responsive-xs {
+      display: none;
+    }
+  }
+
+  .dropdown-menu {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 6rem;
+    justify-content: center;
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 25%);
+
+    @include responsive-xs{
+      top: 12vh;
+      left: 0;
+      transform: none;
+      width: 100%;
+      height: 100vh;
+      box-shadow: none;
+      border-radius: 0;
+      padding: 1.5rem;
+      justify-content: normal;
+      gap: 2rem;
+    }
+
+    &--mobile{
+      display: none;
+
+      @include responsive-xs{
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        font-family: $font-josefin;
+      }
+    }
+
+    .categories {
+      display: flex;
+      gap: 2rem;
+      padding: 0;
+      list-style: none;
+
+      a{
+        cursor: pointer;
+      }
+
+      @include responsive-xs{
+        flex-flow: column wrap;
+        width: 100%;
+      }
+
+      .category {
+        min-width: 10vw;
+        display: flex;
+        flex-flow: column nowrap;
+        padding: 0;
+        gap: 1rem;
+
+        @include responsive-xs{
+          min-width: unset;
+        }
+
+        &-h2 {
+          background-color: $color-green-opacity;
+          color: white;
+          padding: 0.5rem 1rem 0.5rem 1rem;
+          font-size: 24px;
+          font-family: $font-K2D;
+        }
+
+        .subcategory {
+          display: flex;
+          flex-flow: column nowrap;
+          gap: 1rem;
+          list-style: none;
+          padding: 0;
+
+          a {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .exit-dropdown {
+      position: relative;
+
+      @include responsive-xs{
+        display: none;
+      }
+
+      .exit-img {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: -1rem auto;
+      }
+    }
+  }
+
+  &-logo {
+
+    @include responsive-xs{
+      padding-top: 0.5rem;
+    }
+
+    img {
+
+      @include responsive-xs {
+        width: 15rem;
+      }
+    }
+  }
+
+  &-search {
+    display: flex;
+    justify-content: flex-end;
+    width: 50%;
+
+    @include responsive-xs {
+      display: none;
+    }
+
+    label {
+      position: relative;
+
+      input {
+        width: 22vw;
+        height: 2rem;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding-left: 1rem;
+        font-family: $font-josefin;
+        font-size: 16px;
+      }
+
+      img {
+        width: 1rem;
+        position: absolute;
+        left: 1rem;
+        top: 0.55rem;
+      }
+    }
+  }
+}
+
+@keyframes TogglerTopOpenToClose-xs {
+    0% { transform: translateZ(0) rotate(0deg); }
+    50% { transform: translate3d(0, 13px, 0) rotate(0deg); }
+    to { transform: translate3d(0, 13px, 0) scale(1.2) rotate(45deg); }
+}
+
+@keyframes TogglerTopOpenToClose-md {
+    0% { transform: translateZ(0) rotate(0deg); }
+    50% { transform: translate3d(0, 23px, 0) rotate(0deg); }
+    to { transform: translate3d(0, 23px, 0) scale(1.2) rotate(45deg); }
+}
+
+@keyframes TogglerMiddleOpenToClose {
+    60% { opacity: 1; }
+    70% { opacity: 0; }
+    to { opacity: 0; }
+}
+
+@keyframes TogglerBottomOpenToClose {
+    0% { transform: translateZ(0) rotate(0deg); }
+    50% { transform: translate3d(0, -11px, 0) rotate(0deg); }
+    to { transform: translate3d(0, -11px, 0) scale(1.2) rotate(-45deg); }
+}
+
+@keyframes TogglerTopCloseToOpen {
+    0% {
+        bottom: 10px;
+        transform: translate3d(0, 13px, 0) scale(1.2) rotate(45deg);
+    }
+    50% {
+        bottom: 10px;
+        transform: translate3d(0, 13px, 0) rotate(0deg);
+    }
+    to {
+        bottom: 5px;
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+@keyframes TogglerMiddleCloseToOpen {
+    0% { opacity: 0; }
+    30% { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes TogglerBottomCloseToOpen {
+    0% { transform: translateY(-11px) scale(1.2) rotate(-45deg); }
+    50% { transform: translateY(-11px) rotate(0deg); }
+    to { transform: translateY(0) rotate(0deg); }
+}
