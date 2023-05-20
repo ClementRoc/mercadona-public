@@ -14,8 +14,10 @@ client = Client(config.CONTENTFUL_SPACE_ID, config.CONTENTFUL_ACCESS_TOKEN)
 Initialize the database
 """
 
+
 def init_db():
     with app.app_context():
+        db.drop_all()
         db.create_all()
         fetch_articles()
         migrate.init_app(app, db)
@@ -24,6 +26,7 @@ def init_db():
 """
 Article class to define the table in SQL
 """
+
 
 class Article(db.Model):
     __tablename__ = "article"
@@ -64,6 +67,7 @@ class Article(db.Model):
 Filter class to define the table in SQL
 """
 
+
 class Filter(db.Model):
     __tablename__ = "filter"
 
@@ -81,6 +85,7 @@ class Filter(db.Model):
 Tag class to define the table in SQL
 """
 
+
 class Tag(db.Model):
     __tablename__ = "tag"
 
@@ -91,11 +96,13 @@ class Tag(db.Model):
     def __init__(self, name):
         self.name = name
 
+
 """
 Fetch the articles on Contentful and put them all in an Array,
 Hydrate the database based on the hydrate_articles function,
 Return an Article class
 """
+
 
 def fetch_articles():
     articles = client.entries(
@@ -148,8 +155,9 @@ def fetch_articles():
 
         if hasattr(entry, 'promotion'):
             article['promotion_percentage'] = entry.promotion.percentage
-            article['promoted_price'] = article['price'] - round((article['price'] / 100 * entry.promotion.percentage),
-                                                                 2)
+            article['promoted_price'] = round(
+                article['price'] - round((article['price'] / 100 * entry.promotion.percentage),
+                                         2), 2)
             article['promotion_start'] = str(entry.promotion.start.day) + '/' + str(
                 '{:02d}'.format(entry.promotion.start.month))
             article['promotion_end'] = str(entry.promotion.end.day) + '/' + str(
@@ -170,6 +178,7 @@ def fetch_articles():
 """
 Hydrate the articles, turn the Array into an Article class
 """
+
 
 def hydrate_articles(articles):
     for article in articles:
@@ -198,6 +207,7 @@ def hydrate_articles(articles):
 Get all the articles for the database
 """
 
+
 def get_articles():
     return Article.query.all()
 
@@ -206,6 +216,7 @@ def get_articles():
 Get all the categories on Contentful
 Return an Array
 """
+
 
 def get_categories():
     categories = client.entries(
