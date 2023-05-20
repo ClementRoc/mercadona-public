@@ -1,7 +1,7 @@
 Flask~=2.2.3
 contentful~=2.1.1
 psycopg2
-flask_sqlalchemy
+flask_sqlalchemy==3.0.3
 SQLAlchemy~=2.0.10
 gunicorn
 Flask_Migrate
