@@ -1,3 +1,4 @@
 .idea
-mercadonapp/assets
 mercadonapp/node_modules
+venv
+.pytest_cache
