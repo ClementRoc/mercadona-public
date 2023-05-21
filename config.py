@@ -4,7 +4,7 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 
 # HEROKU ENV
 DATABASE_USERNAME = os.getenv('DATABASE_USERNAME', 'bvevoziovkbuck')
-DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', 'ad9c35854e81b21853829f1e13fee7d483efb7e454e1c56179e53aee2ab0fa3e:5432')
+DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', 'ad9c35854e81b21853829f1e13fee7d483efb7e454e1c56179e53aee2ab0fa3e')
 DATABASE_HOST = os.getenv('DATABASE_HOST', 'ec2-34-242-154-118.eu-west-1.compute.amazonaws.com')
 DATABASE_NAME = os.getenv('DATABASE_NAME', 'dcm44cv9ftqjk6')
 
