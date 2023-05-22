@@ -71,12 +71,16 @@ $filterPrice.on('change', e => {
   })
 })
 
-// Show article based on the breadcrumb categories
+// Change the breadcrumb when you click on one link of it
+// Not functional
 $breadcrumbDisplay.on('click', function() {
     let $select = Array.from($('.breadcrumb-display')[0].children)
-    // let $clickValue = this
-    $select.splice(0,  1).join()
-    $('.breadcrumb-display')[0].innerHTML = $select
+    let $newBreadcrumb = []
+    for (let i = 0; i < $select.length; i++){
+        $newBreadcrumb.push('<a>'+$select[i].innerHTML+'</a>')
+    }
+    $newBreadcrumb.splice(0,  $newBreadcrumb.findIndex(this) + 1)
+    $('.breadcrumb-display')[0].outerHTML = $newBreadcrumb.join().replaceAll(',', '')
     const value = document.getElementsByClassName('breadcrumb-display')[0].innerText.split('\n').join(' ')
     $articlesList.forEach(article => {
         const isVisible = article.categories.includes(value)
@@ -84,7 +88,9 @@ $breadcrumbDisplay.on('click', function() {
     })
 })
 
+
 // Check if the localStorage clicked button is on true and click the promotion checkbox if true
+// Semi functionnal, the dropdownMenuHomepage part doesn't quit work
 $(document).ready(function() {
     let clicked = localStorage.getItem('click')
     let dropdownMenuHomepage = localStorage.getItem('fromHomepage')
